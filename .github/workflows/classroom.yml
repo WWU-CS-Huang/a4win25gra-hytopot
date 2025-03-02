@@ -106,6 +106,38 @@ jobs:
         expected-output: ".*"
         comparison-method: regex
         timeout: 1
+    - name: Memory Test
+      id: memory-test
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Memory Test
+        setup-command: ''
+        command: "./run.sh"
+        input: |-
+          1
+          100
+          ooo
+          ooo
+          ooo
+        expected-output: ".*"
+        comparison-method: regex
+        timeout: 1
+    - name: Time Limit Test
+      id: time-limit-test
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Time Limit Test
+        setup-command: ''
+        command: "./run.sh"
+        input: |-
+          1
+          100
+          ooo
+          ooo
+          ooo
+        expected-output: ".*"
+        comparison-method: regex
+        timeout: 1
     - name: Autograding Reporter
       uses: classroom-resources/autograding-grading-reporter@v1
       env:
@@ -113,5 +145,7 @@ jobs:
         ACCEPTED-2_RESULTS: "${{steps.accepted-2.outputs.result}}"
         ACCEPTED-3_RESULTS: "${{steps.accepted-3.outputs.result}}"
         ACCEPTED-4_RESULTS: "${{steps.accepted-4.outputs.result}}"
+        MEMORY-TEST_RESULTS: "${{steps.memory-test.outputs.result}}"
+        TIME-LIMIT-TEST_RESULTS: "${{steps.time-limit-test.outputs.result}}"
       with:
-        runners: accepted-1,accepted-2,accepted-3,accepted-4
+        runners: accepted-1,accepted-2,accepted-3,accepted-4,memory-test,time-limit-test
