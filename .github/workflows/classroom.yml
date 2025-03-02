@@ -52,9 +52,66 @@ jobs:
           o o   o o
         comparison-method: exact
         timeout: 1
+    - name: Accepted 2
+      id: accepted-2
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Accepted 2
+        setup-command: ''
+        command: "./run.sh"
+        input: |-
+          1
+          1
+          o o
+          o o
+          o o
+        expected-output: 'o
+
+          '
+        comparison-method: exact
+        timeout: 1
+    - name: Accepted 3
+      id: accepted-3
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Accepted 3
+        setup-command: ''
+        command: "./run.sh"
+        input: "1\n3\no  \no  \no  "
+        expected-output: |
+          o
+          o
+          o
+          o
+          o
+          o
+          o
+          o
+          o
+        comparison-method: exact
+        timeout: 1
+    - name: Accepted 4
+      id: accepted-4
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Accepted 4
+        setup-command: ''
+        command: "./run.sh"
+        input: |-
+          1
+          7
+          ooo
+          o o
+          ooo
+        expected-output: ".*"
+        comparison-method: regex
+        timeout: 1
     - name: Autograding Reporter
       uses: classroom-resources/autograding-grading-reporter@v1
       env:
         ACCEPTED-1_RESULTS: "${{steps.accepted-1.outputs.result}}"
+        ACCEPTED-2_RESULTS: "${{steps.accepted-2.outputs.result}}"
+        ACCEPTED-3_RESULTS: "${{steps.accepted-3.outputs.result}}"
+        ACCEPTED-4_RESULTS: "${{steps.accepted-4.outputs.result}}"
       with:
-        runners: accepted-1
+        runners: accepted-1,accepted-2,accepted-3,accepted-4
