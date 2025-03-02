@@ -1,0 +1,60 @@
+name: Autograding Tests
+'on':
+- push
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Accepted 1
+      id: accepted-1
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Accepted 1
+        setup-command: ''
+        command: "./run.sh"
+        input: |-
+          2
+          3
+           o
+          ooo
+           o
+          3
+          o o
+           o
+          o o
+        expected-output: |2
+              o
+             ooo
+              o
+           o  o  o
+          ooooooooo
+           o  o  o
+              o
+             ooo
+              o
+
+          o o   o o
+           o     o
+          o o   o o
+             o o
+              o
+             o o
+          o o   o o
+           o     o
+          o o   o o
+        comparison-method: exact
+        timeout: 1
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        ACCEPTED-1_RESULTS: "${{steps.accepted-1.outputs.result}}"
+      with:
+        runners: accepted-1
