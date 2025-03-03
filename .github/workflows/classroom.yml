@@ -15,46 +15,18 @@ jobs:
       uses: actions/checkout@v4
     - name: Accepted 1
       id: accepted-1
-      uses: classroom-resources/autograding-io-grader@v1
+      uses: hytopot/autograding-io-grader@v1
       with:
         test-name: Accepted 1
         setup-command: ''
         command: "./run.sh"
-        input: |-
-          2
-          3
-           o
-          ooo
-           o
-          3
-          o o
-           o
-          o o
-        expected-output: |2
-              o
-             ooo
-              o
-           o  o  o
-          ooooooooo
-           o  o  o
-              o
-             ooo
-              o
-
-          o o   o o
-           o     o
-          o o   o o
-             o o
-              o
-             o o
-          o o   o o
-           o     o
-          o o   o o
+        input: "2\n3\n o \nooo\n o \n3\no o\n o \no o"
+        expected-output: "${{ vars.ACCEPTED1_OUTPUT }}"
         comparison-method: exact
-        timeout: 1
+        timeout: 0.1
     - name: Accepted 2
       id: accepted-2
-      uses: classroom-resources/autograding-io-grader@v1
+      uses: hytopot/autograding-io-grader@v1
       with:
         test-name: Accepted 2
         setup-command: ''
@@ -65,34 +37,23 @@ jobs:
           o o
           o o
           o o
-        expected-output: 'o
-
-          '
+        expected-output: "${{ vars.ACCEPTED2_OUTPUT }}"
         comparison-method: exact
-        timeout: 1
-    - name: Accepted 3
-      id: accepted-3
-      uses: classroom-resources/autograding-io-grader@v1
+        timeout: 0.1
+    - name: Presentation Test
+      id: presentation-test
+      uses: hytopot/autograding-io-grader@v1
       with:
-        test-name: Accepted 3
+        test-name: Presentation Test
         setup-command: ''
         command: "./run.sh"
         input: "1\n3\no  \no  \no  "
-        expected-output: |
-          o
-          o
-          o
-          o
-          o
-          o
-          o
-          o
-          o
+        expected-output: "${{ vars.PRESENTATION_TEST_OUTPUT }}"
         comparison-method: exact
-        timeout: 1
+        timeout: 0.1
     - name: Accepted 4
       id: accepted-4
-      uses: classroom-resources/autograding-io-grader@v1
+      uses: hytopot/autograding-io-grader@v1
       with:
         test-name: Accepted 4
         setup-command: ''
@@ -103,12 +64,12 @@ jobs:
           ooo
           o o
           ooo
-        expected-output: ".*"
+        expected-output: "${{ vars.ACCEPTED4_OUTPUT }}"
         comparison-method: regex
-        timeout: 1
+        timeout: 0.1
     - name: Memory Test
       id: memory-test
-      uses: classroom-resources/autograding-io-grader@v1
+      uses: hytopot/autograding-io-grader@v1
       with:
         test-name: Memory Test
         setup-command: ''
@@ -119,12 +80,12 @@ jobs:
           ooo
           ooo
           ooo
-        expected-output: ".*"
+        expected-output: "${{ vars.MEMORY_TEST_OUTPUT }}"
         comparison-method: regex
-        timeout: 1
+        timeout: 0.1
     - name: Time Limit Test
       id: time-limit-test
-      uses: classroom-resources/autograding-io-grader@v1
+      uses: hytopot/autograding-io-grader@v1
       with:
         test-name: Time Limit Test
         setup-command: ''
@@ -135,17 +96,29 @@ jobs:
           ooo
           ooo
           ooo
-        expected-output: ".*"
+        expected-output: "${{ vars.TIME_LIMIT_TEST_OUTPUT }}"
         comparison-method: regex
-        timeout: 1
+        timeout: 0.1
+    - name: Accepted 5
+      id: accepted-5
+      uses: hytopot/autograding-io-grader@v1
+      with:
+        test-name: Accepted 5
+        setup-command: ''
+        command: "./run.sh"
+        input: "3\n1\nooo\nooo\nooo\n2\nooo\no o\nooo\n3\no o\no o\n o "
+        expected-output: "${{ vars.ACCEPTED5_OUTPUT }}"
+        comparison-method: exact
+        timeout: 0.1
     - name: Autograding Reporter
       uses: classroom-resources/autograding-grading-reporter@v1
       env:
         ACCEPTED-1_RESULTS: "${{steps.accepted-1.outputs.result}}"
         ACCEPTED-2_RESULTS: "${{steps.accepted-2.outputs.result}}"
-        ACCEPTED-3_RESULTS: "${{steps.accepted-3.outputs.result}}"
+        PRESENTATION-TEST_RESULTS: "${{steps.presentation-test.outputs.result}}"
         ACCEPTED-4_RESULTS: "${{steps.accepted-4.outputs.result}}"
         MEMORY-TEST_RESULTS: "${{steps.memory-test.outputs.result}}"
         TIME-LIMIT-TEST_RESULTS: "${{steps.time-limit-test.outputs.result}}"
+        ACCEPTED-5_RESULTS: "${{steps.accepted-5.outputs.result}}"
       with:
-        runners: accepted-1,accepted-2,accepted-3,accepted-4,memory-test,time-limit-test
+        runners: accepted-1,accepted-2,presentation-test,accepted-4,memory-test,time-limit-test,accepted-5
